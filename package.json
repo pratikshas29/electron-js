@@ -11,10 +11,11 @@
     "react-build": "react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
-    "build": "npm run react-build && electron-builder build --win",
-    "build:win": "npm run react-build && electron-builder build --win",
-    "build:mac": "npm run react-build && electron-builder build --mac",
-    "build:linux": "npm run react-build && electron-builder build --linux"
+    "build": "npm run generate-icon && npm run react-build && electron-builder build --win",
+    "build:win": "npm run generate-icon && npm run react-build && electron-builder build --win",
+    "build:mac": "npm run generate-icon && npm run react-build && electron-builder build --mac",
+    "build:linux": "npm run generate-icon && npm run react-build && electron-builder build --linux",
+    "generate-icon": "node scripts/generate-icon.js"
   },
   "build": {
     "appId": "com.electron.auth.app",
@@ -32,7 +33,9 @@
       "main": "main.js"
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "assets/logo.ico",
       "artifactName": "${productName}-Setup-${version}.${ext}",
       "publisherName": "Your Name"
@@ -65,6 +68,7 @@
     "electron": "^25.8.0",
     "electron-builder": "^25.1.8",
     "postcss": "^8.4.49",
+    "sharp": "^0.33.1",
     "wait-on": "^7.0.1"
   },
   "browserslist": {
