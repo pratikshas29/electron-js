@@ -36,6 +36,9 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "extraMetadata": {
+      "main": "main.js"
     }
   },
   "homepage": "./",
