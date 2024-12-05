@@ -5,53 +5,27 @@
   "main": "main.js",
   "author": "Your Name",
   "scripts": {
-    "start": "electron .",
-    "dev": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test",
-    "react-eject": "react-scripts eject",
-    "build": "npm run react-build && electron-builder build --win -c.extraMetadata.main=build/electron.js",
-    "build:win": "npm run react-build && electron-builder build --win",
-    "build:mac": "npm run react-build && electron-builder build --mac",
-    "build:linux": "npm run react-build && electron-builder build --linux"
+    "start": "react-scripts start",
+    "build": "react-scripts build && npm run electron:build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron:start": "electron .",
+    "electron:build": "electron-builder -c.extraMetadata.main=build/main.js"
   },
   "build": {
     "appId": "com.electron.auth.app",
     "productName": "Electron Auth App",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
     "directories": {
       "buildResources": "assets",
       "output": "dist"
     },
-    "files": [
-      "build/**/*",
-      "main.js",
-      "node_modules/**/*"
-    ],
     "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "assets/logo.ico"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true
-    },
-    "extraResources": [
-      {
-        "from": "build",
-        "to": "build",
-        "filter": ["**/*"]
-      }
-    ],
-    "asar": true
+      "target": "nsis"
+    }
   },
   "homepage": "./",
   "dependencies": {
