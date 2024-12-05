@@ -11,30 +11,30 @@
     "react-build": "react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
-    "build": "npm run generate-icon && npm run react-build && electron-builder build --win",
-    "build:win": "npm run generate-icon && npm run react-build && electron-builder build --win",
-    "build:mac": "npm run generate-icon && npm run react-build && electron-builder build --mac",
-    "build:linux": "npm run generate-icon && npm run react-build && electron-builder build --linux",
-    "generate-icon": "node scripts/generate-icon.js"
+    "build": "npm run react-build && electron-builder build --win -c.extraMetadata.main=build/electron.js",
+    "build:win": "npm run react-build && electron-builder build --win",
+    "build:mac": "npm run react-build && electron-builder build --mac",
+    "build:linux": "npm run react-build && electron-builder build --linux"
   },
   "build": {
     "appId": "com.electron.auth.app",
     "productName": "Electron Auth App",
     "directories": {
-      "output": "dist",
-      "buildResources": "assets"
+      "buildResources": "assets",
+      "output": "dist"
     },
     "files": [
       "build/**/*",
       "main.js",
-      "preload.js",
       "node_modules/**/*"
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "assets/logo.ico"
@@ -44,11 +44,14 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
     },
-    "extraMetadata": {
-      "main": "main.js"
-    },
-    "asar": true,
-    "artifactName": "${productName}-Setup-${version}.${ext}"
+    "extraResources": [
+      {
+        "from": "build",
+        "to": "build",
+        "filter": ["**/*"]
+      }
+    ],
+    "asar": true
   },
   "homepage": "./",
   "dependencies": {
