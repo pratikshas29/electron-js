@@ -29,24 +29,13 @@
       "main.js",
       "node_modules/**/*"
     ],
-    "extraMetadata": {
-      "main": "main.js"
-    },
     "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "assets/logo.ico",
-      "artifactName": "${productName}-Setup-${version}.${ext}",
-      "publisherName": "Your Name"
+      "target": ["nsis"],
+      "icon": "assets/logo.ico"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Electron Auth App",
-      "uninstallDisplayName": "Electron Auth App"
+      "allowToChangeInstallationDirectory": true
     }
   },
   "homepage": "./",
