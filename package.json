@@ -27,19 +27,28 @@
     "files": [
       "build/**/*",
       "main.js",
+      "preload.js",
       "node_modules/**/*"
     ],
     "win": {
-      "target": ["nsis"],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
       "icon": "assets/logo.ico"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
     },
     "extraMetadata": {
       "main": "main.js"
-    }
+    },
+    "asar": true,
+    "artifactName": "${productName}-Setup-${version}.${ext}"
   },
   "homepage": "./",
   "dependencies": {

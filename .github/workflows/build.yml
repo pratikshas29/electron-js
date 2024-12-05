@@ -41,15 +41,23 @@ jobs:
       run: npm run build:win
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-builds
+        path: |
+          dist/*.exe
+          dist/win-unpacked/**/*
+        if-no-files-found: error
         
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/v')
       uses: softprops/action-gh-release@v1
       with:
-        files: |
-          dist/**/*.exe
-          dist/win-unpacked/**/*
+        files: dist/*.exe
         draft: false
         prerelease: false
+        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
