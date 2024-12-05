@@ -3,6 +3,8 @@ name: Build Electron App
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -10,55 +12,58 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
+    
     strategy:
       matrix:
         node-version: [18.x]
-
+        
     steps:
     - uses: actions/checkout@v3
-    
+      with:
+        fetch-depth: 0
+        
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    
+        
     - name: Install dependencies
       run: |
         npm install
-        npm install -g electron-builder
-    
-    - name: Build React app
-      run: |
-        npm run react-build
       env:
         CI: false
         
-    - name: Copy main.js to build
+    - name: Build React app
       run: |
-        copy main.js build\electron.js
-    
+        npm run build
+      env:
+        CI: false
+        
+    - name: Copy main.js to build directory
+      run: |
+        Copy-Item -Path "main.js" -Destination "build/main.js" -Force
+        
     - name: Build Electron app
       run: |
-        electron-builder build --win
+        npm run electron:build
       env:
+        CI: false
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Upload Windows exe
-      uses: actions/upload-artifact@v3
-      with:
-        name: windows-exe
-        path: dist/*.exe
         
     - name: Create Release
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v1
       with:
-        files: "dist/*.exe"
-        tag_name: v${{ github.run_number }}
-        name: Release v${{ github.run_number }}
+        files: |
+          dist/*.exe
         draft: false
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-exe
+        path: dist/*.exe
