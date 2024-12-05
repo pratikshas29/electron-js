@@ -23,7 +23,7 @@ const SectionDetail = () => {
       case TableStatus.RUNNING:
         return 'bg-pink-100 border-pink-300';
       case TableStatus.OCCUPIED:
-        return 'bg-blue-100 border-blue-300';
+        return 'bg-yellow-100 border-yellow-300';
       case TableStatus.BILL_PRINTED:
         return 'bg-gray-100 border-gray-300';
       default:
@@ -155,11 +155,21 @@ const SectionDetail = () => {
                 Available
               </button>
               <button
+                onClick={() => setFilterStatus('occupied')}
+                className={`px-6 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
+                  filterStatus === 'occupied'
+                    ? 'bg-yellow-500 text-white'
+                    : 'bg-white text-yellow-600 border border-yellow-500 hover:bg-yellow-50'
+                }`}
+              >
+                Occupied
+              </button>
+              <button
                 onClick={() => setFilterStatus('running')}
                 className={`px-6 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
                   filterStatus === 'running'
-                    ? 'bg-red-500 text-white'
-                    : 'bg-white text-red-600 border border-red-500 hover:bg-red-50'
+                    ? 'bg-pink-500 text-white'
+                    : 'bg-white text-pink-600 border border-pink-500 hover:bg-pink-50'
                 }`}
               >
                 Running
@@ -194,7 +204,7 @@ const SectionDetail = () => {
               <span className="text-sm text-gray-600">Running</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded"></div>
+              <div className="w-3 h-3 bg-yellow-100 border border-yellow-300 rounded"></div>
               <span className="text-sm text-gray-600">Occupied</span>
             </div>
             <div className="flex items-center space-x-2">
@@ -212,7 +222,7 @@ const SectionDetail = () => {
                 className={`relative p-4 border-2 rounded-lg cursor-pointer min-h-[100px] ${getStatusColor(table.status)}`}
               >
                 <div className="text-lg font-semibold text-gray-700">{table.id}</div>
-                {table.status === TableStatus.RUNNING && (
+                {(table.status === TableStatus.RUNNING || table.status === TableStatus.OCCUPIED) && (
                   <>
                     <div className="text-sm text-gray-600">₹{table.amount}</div>
                     <div className="absolute top-2 right-2 text-xs text-gray-500">
@@ -220,6 +230,9 @@ const SectionDetail = () => {
                     </div>
                   </>
                 )}
+                <div className="absolute bottom-2 right-2 text-xs font-medium">
+                  {table.status}
+                </div>
               </div>
             ))}
           </div>
@@ -227,7 +240,7 @@ const SectionDetail = () => {
           {/* Bottom Filters */}
           <div className="flex flex-wrap gap-3 text-sm">
             <div className="px-4 py-2 bg-gray-50 rounded-md text-gray-700">
-              Forecast Sales - {stats.forecast}
+              Forecast Sales - ₹{stats.forecast}
             </div>
             <button
               onClick={() => setFilterStatus('empty')}
@@ -253,11 +266,11 @@ const SectionDetail = () => {
               onClick={() => setFilterStatus('occupied')}
               className={`px-4 py-2 rounded-md ${
                 filterStatus === 'occupied'
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-yellow-500 text-white'
                   : 'bg-gray-50 text-gray-700'
               }`}
             >
-              Ordered - {stats.ordered}
+              Occupied - {stats.ordered}
             </button>
             <button
               onClick={() => setFilterStatus('billPrinted')}

@@ -40,9 +40,16 @@ jobs:
       env:
         CI: false
         
-    - name: Copy main.js to build directory
+    - name: Copy electron.js to build directory
       run: |
-        Copy-Item -Path "main.js" -Destination "build/main.js" -Force
+        Copy-Item -Path "public\electron.js" -Destination "build\electron.js" -Force
+        
+    - name: Build Electron app
+      run: |
+        npm run electron:build
+      env:
+        CI: false
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
