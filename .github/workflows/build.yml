@@ -34,6 +34,10 @@ jobs:
         npm run react-build
       env:
         CI: false
+        
+    - name: Copy main.js to build
+      run: |
+        copy main.js build\electron.js
     
     - name: Build Electron app
       run: |
